@@ -4,29 +4,28 @@ namespace src\Controllers;
 
 use src\Models\Database;
 use src\Services\Reponse;
+use src\Repositories\OptionsRepositories;
 use src\Repositories\ReservationRepositories;
 
-class ReservationController
+class OptionsController
 {
     use Reponse;
 
     private $DB;
-    private $ReservationRepositories;
+    private $OptionsRepositories;
 
     public function __construct()
     {
         $database = new Database;
         $this->DB = $database->getDB();
-        $this->ReservationRepositories = new ReservationRepositories;
+        $this->OptionsRepositories = new OptionsRepositories;
         require_once __DIR__ . '/../../config.php';
     }
 
-    public function stockerLaReservation()
+    public function stockerLesOptions()
     {
-        $ReservationRepositories = new ReservationRepositories();
-        $this->ReservationRepositories->traitementReservation($ReservationRepositories);
+        $OptionsRepositories = new OptionsRepositories();
+        $this->OptionsRepositories->traitementOptions($OptionsRepositories);
         $this->render("dashboard", ["erreur" => ""]);
-        
     }
-    
 }

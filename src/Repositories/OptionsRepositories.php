@@ -1,11 +1,10 @@
-<?php 
+<?php
 
 namespace src\Repositories;
 
 use src\Models\Options;
 use PDO;
 use src\Models\Database;
-use src\Models\Reservation;
 
 class OptionsRepositories
 {
@@ -19,78 +18,55 @@ class OptionsRepositories
         require_once __DIR__ . '/../../config.php';
     }
 
-    public function getThisOptionsById($id): Options
+    public function traitementOptions(OptionsRepositories $OptionsRepositories)
     {
-        $sql = $this->concatenationRequete("WHERE " . PREFIXE . "options.ID = :id");
-
+        $options = [];
+    
+        // Check if 'enfants' is set to "Oui" and handle children's helmets
+        if (isset($_POST['enfants']) && $_POST['enfants'] === "Oui" && isset($_POST['nombreCasquesEnfants']) && $_POST['nombreCasquesEnfants']>0) {
+            $nomOption = "Casque Enfant";
+            $stockOption = (int)$_POST['nombreCasquesEnfants'];
+            $prixOption = $this->getPrixOption('nombreCasquesEnfants');
+            $options[] = new Options(['nomOption' => $nomOption, 'stockOption' => $stockOption, 'prixOption' => $prixOption]);
+        }
+    
+        // Check if 'NombreLugesEte' is set and handle summer sledges
+        if (isset($_POST['NombreLugesEte']) && $_POST['NombreLugesEte'] > 0 ) {
+            $nomOption = "Luge";
+            $stockOption = (int)$_POST['NombreLugesEte'];
+            $prixOption = $this->getPrixOption('NombreLugesEte');
+            $options[] = new Options(['nomOption' => $nomOption, 'stockOption' => $stockOption, 'prixOption' => $prixOption]);
+        }
+    
+        // Loop through options and store them in the database
+        foreach ($options as $option) {
+            $OptionsRepositories->createOptions($option);
+        }
+    }
+    
+    public function createOptions(Options $options)
+    {
+        $sql = "INSERT INTO " . PREFIXE . "options (nomOption, stockOption, prixOption)
+         VALUES (:nomOption, :stockOption, :prixOption)";
+         
         $statement = $this->DB->prepare($sql);
-
-        // verifier si besoin d'ajouter options.ID = :id
-        $statement->bindParam(':id', $id);
-        $statement->execute();
-        $statement->setFetchMode(PDO::FETCH_CLASS, Options::class);
-        return $statement->fetch();
+        $statement->execute([
+            ':nomOption' => $options->getNomOption(),
+            ':stockOption' => $options->getStockOption(),
+            ':prixOption' => $options->getPrixOption(),
+        ]);
+        
     }
 
-    public function getThisOptionsByReservationId($id): Options
+    private function getPrixOption($option)
     {
-        $sql = $this->concatenationRequete("WHERE " . PREFIXE . "options.reservationId = :id");
-
-        $statement = $this->DB->prepare($sql);
-        $statement->bindParam(':id', $id);
-        $statement->execute();
-        $statement->setFetchMode(PDO::FETCH_CLASS, Options::class);
-        return $statement->fetch();
+        switch ($option) {
+            case 'nombreCasquesEnfants':
+                return 2;
+            case 'NombreLugesEte':
+                return 5;
+            default:
+                return 0;
+        }
     }
-
-    public function getThisOptionsByUser($id): Options
-    {
-        $sql = $this->concatenationRequete("WHERE " . PREFIXE . "options.user = :id");
-
-        $statement = $this->DB->prepare($sql);
-        $statement->bindParam(':id', $id);
-        $statement->execute();
-        $statement->setFetchMode(PDO::FETCH_CLASS, Options::class);
-        return $statement->fetch();
-    }
-
-
-    public function CreateThisOptions(Options $Options): Options
-    {
-        $sql = "INSERT INTO " . PREFIXE . "Options (optionsID, nomOptions, prixOptions) VALUES (:optionsID, :nomOptions, :prixOptions)";
-        $statement = $this->DB->prepare($sql);
-        $statement->bindParam(':optionsID', $Options->optionsID);
-        $statement->bindParam(':nomOptions', $Options->nomOptions);
-        $statement->bindParam(':prixOptions', $Options->prixOptions);
-        $statement->execute();
-        return $Options;
-    }
-
-    public function UpdateThisOptions(Options $Options): Options
-    {
-        $sql = "UPDATE " . PREFIXE . "Options SET nomOptions = :nomOptions, prixOptions = :prixOptions WHERE optionsID = :optionsID";
-        $statement = $this->DB->prepare($sql);
-        $statement->bindParam(':optionsID', $Options->optionsID);
-        $statement->bindParam(':nomOptions', $Options->nomOptions);
-        $statement->bindParam(':prixOptions', $Options->prixOptions);
-        $statement->execute();
-        return $Options;
-    }
-
-    public function DeleteThisOptions(Options $Options): Options
-    {
-        $sql = "DELETE FROM " . PREFIXE . "Options WHERE optionsID = :optionsID";
-        $statement = $this->DB->prepare($sql);
-        $statement->bindParam(':optionsID', $Options->optionsID);
-        $statement->execute();
-        return $Options;
-    }
-
-
-    private function concatenationRequete($sql)
-    {
-        $sql = "SELECT * FROM " . PREFIXE . "Options " . $sql;
-        return $sql;
-    }
-
 }

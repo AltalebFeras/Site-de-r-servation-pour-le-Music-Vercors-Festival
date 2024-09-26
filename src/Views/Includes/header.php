@@ -16,10 +16,11 @@
   <link rel="stylesheet" href="<?= HOME_URL ?>assets/css/form.css">
   <?php if (isset($_SESSION['connecté'])) { ?>
     <link rel="stylesheet" href="<?= HOME_URL ?>assets/css/dashboard.css">
-    <script src="<?= HOME_URL ?>assets/js/dashboard.js" defer></script>
-  <?php } ?>
-  <script src="<?= HOME_URL ?>assets/scripts/script.js" defer></script>
-  <script src="assets/scripts/script.js" defer></script>
+    <script src="<?= HOME_URL ?>assets/scripts/dashboard.js" defer></script>
+<?php } else { ?>
+    <script src="<?= HOME_URL ?>assets/scripts/script.js" defer></script>
+<?php } ?>
+
 </head>
 
 <body>

@@ -1,41 +1,40 @@
 <?php
-
 include_once __DIR__ . '/Includes/header.php';
-
 include_once __DIR__ . '/Includes/colonne.php';
 
-    var_dump($_SESSION['role']);
+if ($_SESSION['role'] == 'user') {
+    echo '<div>
+            <a href="dashboard/reservation" class="btn btn-info">Ma réservation</a>
+            <a href="dashboard/compte" class="btn btn-info">Mon compte</a>
+          </div>';
+
 
 ?>
-<div class="content">
 
-<?php
-  // switch ($section) {
-  //   case '':
-  //     switch ($action) {
-  //       case '':
-  //         include_once __DIR__ . '';
-  //         break;
-
-  //       case '':
-  //         include_once __DIR__ . '';
-  //         break;
-
-  //       case '':
-  //         include_once __DIR__ . '';
-  //         break;
-
-  //       default:
-  //         include_once __DIR__ . '';
-  //         break;
-  //     }
-  //     break;
-
-  //   default:
-  //     include_once __DIR__ . '';
-  //     break;
-  // }
-  ?>
+<div id="message">
+    <?php
+    if (isset( $_SESSION['message']) 
+    ) {
+        echo '<div class="alert bg-success" role="alert">' . $_SESSION['message'] . '</div>';
+        echo '<div>
+                <p>Merci pour votre réservation ! Cliquez sur le <a href="dashboard/reservation">lien</a> pour voir tous les détails de votre réservation.</p>
+            </div>';
+        unset($_SESSION['message']);
+    }
+    ?>
 </div>
+
+   
+
+
+
+<div>
+        <p class="fs-3 my-4">  Cliquez sur le
+            <a  href="createReservation">👉ICI👈</a>
+            pour creér une réservation.
+        </p>
+    </div>
+<?php } ?>
 <?php
 include_once __DIR__ . '/Includes/footer.php';
+?>

@@ -3,8 +3,10 @@
 namespace src\Repositories;
 
 use src\Repositories\UtilisateurRepositories;
+use src\Repositories\ReservationRepositories;
 
 $utilisateurRepositories = new UtilisateurRepositories();
+$ReservationRepositories = new ReservationRepositories();
 
 ?>
 <div id="colonne">
@@ -13,18 +15,21 @@ $utilisateurRepositories = new UtilisateurRepositories();
   if (isset($_SESSION['role'])) {
     if ($_SESSION['role'] == 'admin') {
       echo "<h2>Bonjour Admin!</h2>";
+      
+      $ReservationRepositories->displayAllReservations();
+
+
+
+
     } elseif ($_SESSION['role'] == 'user') {
-      $utilisateur = $_SESSION['utilisateur'];
-      // Assuming getPrenom() is a method of UtilisateurRepositories
-      $prenom = $utilisateurRepositories->getPrenom($utilisateur);
+      $utilisateurID = $_SESSION['utilisateur'];
+      $prenom = $utilisateurRepositories->getCoordonee($utilisateurID);
       echo "<h2>Bonjour $prenom!</h2>";
-      $all = $utilisateurRepositories->getAll($utilisateur);
-      var_dump($all);
+      
+     
     }
   }
   ?>
 
-  <ul>
-    <li class="administration <?= $section == "administration" ? "actif" : "" ?>" onclick="location.href='/tableau-admin'">Administration</li>
-  </ul>
+
 </div>

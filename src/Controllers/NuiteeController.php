@@ -4,29 +4,28 @@ namespace src\Controllers;
 
 use src\Models\Database;
 use src\Services\Reponse;
+use src\Repositories\NuiteeRepositories;
 use src\Repositories\ReservationRepositories;
 
-class ReservationController
+class NuiteeController
 {
     use Reponse;
 
     private $DB;
-    private $ReservationRepositories;
+    private $NuiteeRepositories;
 
     public function __construct()
     {
         $database = new Database;
         $this->DB = $database->getDB();
-        $this->ReservationRepositories = new ReservationRepositories;
+        $this->NuiteeRepositories = new NuiteeRepositories;
         require_once __DIR__ . '/../../config.php';
     }
 
-    public function stockerLaReservation()
+    public function stockerLaNuitee()
     {
-        $ReservationRepositories = new ReservationRepositories();
-        $this->ReservationRepositories->traitementReservation($ReservationRepositories);
+        $NuiteeRepositories = new NuiteeRepositories();
+        $this->NuiteeRepositories->traitementNuitee($NuiteeRepositories);
         $this->render("dashboard", ["erreur" => ""]);
-        
     }
-    
 }

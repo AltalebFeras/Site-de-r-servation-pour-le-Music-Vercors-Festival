@@ -1,3 +1,4 @@
+
 CREATE TABLE mvf_nuitee
 (
   nuiteeID   INTEGER     NOT NULL AUTO_INCREMENT,
@@ -8,9 +9,6 @@ CREATE TABLE mvf_nuitee
 
 ALTER TABLE mvf_nuitee
   ADD CONSTRAINT UQ_nuiteeID UNIQUE (nuiteeID);
-
-ALTER TABLE mvf_nuitee
-  ADD CONSTRAINT UQ_nomNuitee UNIQUE (nomNuitee);
 
 CREATE TABLE mvf_options
 (
@@ -24,9 +22,6 @@ CREATE TABLE mvf_options
 ALTER TABLE mvf_options
   ADD CONSTRAINT UQ_optionID UNIQUE (optionID);
 
-ALTER TABLE mvf_options
-  ADD CONSTRAINT UQ_nomOption UNIQUE (nomOption);
-
 CREATE TABLE mvf_pass
 (
   passID   INTEGER     NOT NULL AUTO_INCREMENT,
@@ -38,15 +33,12 @@ CREATE TABLE mvf_pass
 ALTER TABLE mvf_pass
   ADD CONSTRAINT UQ_passID UNIQUE (passID);
 
-ALTER TABLE mvf_pass
-  ADD CONSTRAINT UQ_nomPass UNIQUE (nomPass);
-
 CREATE TABLE mvf_reservation
 (
-  reservationID       INTEGER NOT NULL AUTO_INCREMENT,
-  nombre_reservations INTEGER NOT NULL,
-  prix_total          INTEGER NULL    ,
-  utilisateurID       INTEGER NOT NULL,
+  reservationID      INTEGER NOT NULL AUTO_INCREMENT,
+  nombreReservations INTEGER NOT NULL,
+  prixTotal          INTEGER NULL    ,
+  utilisateurID      INTEGER NOT NULL,
   PRIMARY KEY (reservationID)
 );
 
@@ -55,9 +47,9 @@ ALTER TABLE mvf_reservation
 
 CREATE TABLE mvf_reservation_nuitee
 (
-  jour          DATE    NULL    ,
-  reservationID INTEGER NOT NULL,
-  nuiteeID      INTEGER NOT NULL
+  jour          VARCHAR(60) NOT NULL,
+  reservationID INTEGER     NOT NULL,
+  nuiteeID      INTEGER     NOT NULL
 );
 
 CREATE TABLE mvf_reservation_option
@@ -68,9 +60,9 @@ CREATE TABLE mvf_reservation_option
 
 CREATE TABLE mvf_reservation_pass
 (
-  jour          DATE    NULL    ,
-  passID        INTEGER NOT NULL,
-  reservationID INTEGER NOT NULL
+  jour          VARCHAR(60) NOT NULL,
+  passID        INTEGER     NOT NULL,
+  reservationID INTEGER     NOT NULL
 );
 
 CREATE TABLE mvf_utilisateur

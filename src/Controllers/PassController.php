@@ -4,29 +4,28 @@ namespace src\Controllers;
 
 use src\Models\Database;
 use src\Services\Reponse;
+use src\Repositories\PassRepositories;
 use src\Repositories\ReservationRepositories;
 
-class ReservationController
+class PassController
 {
     use Reponse;
 
     private $DB;
-    private $ReservationRepositories;
+    private $PassRepositories;
 
     public function __construct()
     {
         $database = new Database;
         $this->DB = $database->getDB();
-        $this->ReservationRepositories = new ReservationRepositories;
+        $this->PassRepositories = new PassRepositories;
         require_once __DIR__ . '/../../config.php';
     }
 
-    public function stockerLaReservation()
+    public function stockerLePass()
     {
-        $ReservationRepositories = new ReservationRepositories();
-        $this->ReservationRepositories->traitementReservation($ReservationRepositories);
+        $PassRepositories = new PassRepositories();
+        $this->PassRepositories->traitementPass($PassRepositories);
         $this->render("dashboard", ["erreur" => ""]);
-        
     }
-    
 }
